@@ -9,7 +9,7 @@ export interface setSearchDataProp {
 function Header({ setSearchData }: setSearchDataProp) {
    return (
       <header>
-         <div className="z-10 fixed w-full flex items-center justify-between bg-red-900 p-4">
+         <div className="z-10 fixed w-full flex items-center justify-between bg-black p-4">
             <LogoChromeAndTitle />
             <SearchBox setSearchData={setSearchData} />
             <div className=" ml-auto">
