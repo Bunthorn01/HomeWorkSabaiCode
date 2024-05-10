@@ -5,6 +5,6 @@
 -if want to update double on card then "button have sign + to add card
 " will change to "button update for update info on card" then can edit info.
 =========================
--Version 1
+-Version 2
 =======
 
