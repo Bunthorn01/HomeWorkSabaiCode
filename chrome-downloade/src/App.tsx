@@ -5,7 +5,6 @@ function App() {
   return (
     <>
       {/* wrap page chrome download */}
-      {/* vgh */}
       <ChromeDownload />
     </>
   );
