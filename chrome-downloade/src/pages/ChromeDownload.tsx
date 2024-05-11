@@ -1,10 +1,15 @@
-import { useState } from "react";
+// import { useState } from "react";
 import Popup from "../component/Popup";
 import PopupConfirmDelete from "../component/PopupConfirmDelete";
 import CardList from "../component/organisms/card-chrom-dowload/CardList";
 import Header from "../component/templates/Header";
 import PopupEdit from "../component/PopupEdit";
 import { IoIosAddCircle } from "react-icons/io";
+
+
+// contextAPI
+import { Provider } from "../contextPAI/provider";
+
 export interface dataType {
    id: number;
    creator: string;
@@ -18,37 +23,55 @@ export interface verifyDelete {
 }
 
 function ChromeDownload() {
-   const [isPopup, setIsPopup] = useState<boolean>(false);
-   const [isMatch, setIsMatch] = useState<boolean>(false);
-   const [datas, setDatas] = useState<dataType[]>([]);
-   const [search, setSearchData] = useState<string>("");
-   const [catchId, setCatchId] = useState<number | undefined>();
-   const [isUpdate, setIsUpdate] = useState<boolean>(false);
-   const [isPopupEdit, setIsPopupEdit] = useState<boolean>(false);
+   //props
+   // const [datas, setDatas] = useState<dataType[]>([]);
+   // const [search, setSearchData] = useState<string>("");
+   // const [catchId, setCatchId] = useState<number | undefined>();
+   // const [isMatch, setIsMatch] = useState<boolean>(false);
+   // const [isUpdate, setIsUpdate] = useState<boolean>(false);
+   // const [isPopup, setIsPopup] = useState<boolean>(false);
+   // const [isPopupEdit, setIsPopupEdit] = useState<boolean>(false);
+
+   //contextAPI
+   const {
+      data,
+      setData,
+      search,
+      setSearch,
+      catchId,
+      setCatchId,
+      isMatch,
+      setIsMatch,
+      isUpdate,
+      setIsUpdate,
+      isPopup,
+      setIsPopup,
+      isPopupEdit,
+      setIsPopupEdit
+   } = Provider();
+
    const addNewItem = (newItem: dataType) => {
-      const newId = datas.length + 1;
+      const newId = data.length + 1;
       const newItemWithId = { ...newItem, id: newId };
-      setDatas([...datas, newItemWithId]);
+      setData([...data, newItemWithId]);
    };
 
-   console.log(datas);
-   // function to handle searching using search value
+   // function searching creatorName and fileName
    const filterData = () => {
-      let filtered = datas;
-      // filter location
+      let filtered = data;
+      // filter
       if (search !== "") {
          filtered = filtered.filter((item) =>
             item.creator
                .toLocaleLowerCase()
                .includes(search.toLocaleLowerCase())
-            ||item.fileName
+            || item.fileName
                .toLocaleLowerCase()
                .includes(search.toLocaleLowerCase())
          );
       }
       return filtered;
    };
-
    const filterDatas = filterData();
 
    // Function to delete an existing item
@@ -61,10 +84,10 @@ function ChromeDownload() {
          alert("incorrect delete filename");
          return;
       }
-      const updatedDatas = datas.filter((i) => i.id !== index);
-      setDatas(updatedDatas);
+      const updatedDatas = data.filter((i) => i.id !== index);
+      setData(updatedDatas);
    };
-   
+
    // Function to handle clicking the Update button
    const handleUpdateClick = () => {
       setIsPopupEdit(true);
@@ -73,7 +96,7 @@ function ChromeDownload() {
 
    return (
       <>
-         <Header setSearchData={setSearchData} />
+         <Header setSearch={setSearch} />
          <section className="wrap-page">
             <div className="w-[800px] mt-5">
                <CardList
@@ -96,14 +119,14 @@ function ChromeDownload() {
                Update
             </button>
          ) : (
-            <div 
-            className="fixed bottom-5 right-5 text-white bg-blue-500 px-4 py-4 rounded-lg hover:bg-blue-600"
-            
-              onClick={() => {
-                 setIsPopup(true);
-              }}
+            <div
+               className="fixed bottom-5 right-5 text-white bg-blue-500 px-4 py-4 rounded-lg hover:bg-blue-600"
+
+               onClick={() => {
+                  setIsPopup(true);
+               }}
             >
-               <IoIosAddCircle  className="w-8 h-8 text-black"  />
+               <IoIosAddCircle className="w-8 h-8 text-black" />
             </div>
          )}
          {isPopup && (
@@ -111,7 +134,7 @@ function ChromeDownload() {
                props={{
                   setIsPopup: setIsPopup,
                   addNewItem: addNewItem,
-                  data: datas,
+                  data: data,
                }}
             />
          )}
@@ -119,7 +142,7 @@ function ChromeDownload() {
             <PopupConfirmDelete
                setIsMatch={setIsMatch}
                deleteItem={deleteItem}
-               data={datas}
+               data={data}
                id={catchId}
             />
          )}
@@ -127,8 +150,8 @@ function ChromeDownload() {
          {isPopupEdit && (
             <PopupEdit
                setIsPopupEdit={setIsPopupEdit}
-               data={datas}
-               setData={setDatas}
+               data={data}
+               setData={setData}
                id={catchId}
             />
          )}
